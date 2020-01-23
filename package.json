@@ -20,8 +20,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm-run-all server:build client:build sh:move-client",
+    "build": "npm-run-all sh:clean server:build client:build sh:move-client",
     "sh:move-client": "mv ./build ./deploy/client",
+    "sh:clean": "rm -rf ./deploy/*",
     "client:build": "react-scripts build",
     "client:test": ".react-scripts test",
     "client:eject": "react-scripts eject",
