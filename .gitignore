@@ -9,7 +9,8 @@
 
 # production
 /build
-/build-server
+/dev-server
+/deploy
 
 # misc
 .DS_Store
