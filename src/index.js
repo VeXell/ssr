@@ -1,15 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import StyleContext from 'isomorphic-style-loader/StyleContext'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const element = document.getElementById('root');
+const insertCss = (...styles) => {
+    const removeCss = styles.map(style => style._insertCss());
+    return () => removeCss.forEach(dispose => dispose());
+};
 
-if (element.getAttribute('data-ssr')) {
-    ReactDOM.hydrate(<App />, element);
+const content = (
+    <StyleContext.Provider value={{ insertCss }}>
+        <App />
+    </StyleContext.Provider>
+);
+
+const rootElement = document.getElementById('root');
+if (rootElement.getAttribute('data-ssr')) {
+    ReactDOM.hydrate(content, rootElement);
 } else {
-    ReactDOM.render(<App />, element);
+    ReactDOM.render(content, rootElement);
 }
 
 // If you want your app to work offline and load faster, you can change

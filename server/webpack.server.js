@@ -1,6 +1,9 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
+
+const outputPath = process.env.NODE_ENV === 'production' ?
+    path.resolve('deploy/server') :
+    path.resolve('dev-server');
 
 module.exports = {
     entry: './server/app.js',
@@ -8,15 +11,10 @@ module.exports = {
     externals: [nodeExternals()],
 
     output: {
-        path: path.resolve('build-server'),
+        path: outputPath,
         filename: 'index.js'
     },
-    plugins: [
-        new ExtractCssChunks({
-            filename: '[name].css',
-            chunkFilename: '[id].css',
-        }),
-    ],
+    plugins: [],
     module: {
         rules: [
             {
@@ -35,14 +33,15 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
+                    'isomorphic-style-loader',
                     {
-                        loader: ExtractCssChunks.loader,
+                        loader: 'css-loader',
                         options: {
-                            publicPath: '/public/',
-                        },
+                            importLoaders: 1
+                        }
                     },
-                    'css-loader',
-                ],
+                    'postcss-loader'
+                ]
             },
         ]
     }

@@ -1,16 +1,18 @@
 import React from 'react';
-import './App.css';
+import styles from './App.css';
+import stylesIndex from './index.css';
+import withStyles from 'isomorphic-style-loader/withStyles';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src="/public/assets/logo.svg" className="App-logo" />
+    <div className={styles.App}>
+      <header className={styles.AppHeader}>
+        <img src="/public/assets/logo.svg" className={styles.AppLogo} />
         <p>
           Edit! <code>src/App.js</code> and save to reload.
         </p>
         <a
-          className="App-link"
+          className={styles.AppLink}
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
@@ -26,4 +28,4 @@ function App() {
   );
 }
 
-export default App;
+export default withStyles(stylesIndex, styles)(App);
