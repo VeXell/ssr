@@ -20,17 +20,17 @@
     "react-scripts": "^3.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "npm-run-all sh:clean server:build client:build sh:move-client",
+    "dev": "react-app-rewired start",
+    "dev:server": "npm-run-all --parallel build:client dev:server:*",
+    "dev:server:build": "NODE_ENV=development webpack --config ./server/webpack.server.js --mode=development -w",
+    "dev:server:start": "nodemon ./dev-server/index.js",
+    "build": "npm-run-all sh:clean build:* sh:move-client",
+    "build:client": "react-app-rewired build",
+    "build:server": "NODE_ENV=production webpack --config ./server/webpack.server.js --mode=production",
     "sh:move-client": "mv ./build ./deploy/client",
     "sh:clean": "rm -rf ./deploy/*",
-    "client:build": "react-app-rewired build",
-    "client:test": "react-app-rewired test",
-    "client:eject": "react-app-rewired eject",
-    "server:build": "NODE_ENV=production webpack --config ./server/webpack.server.js --mode=production",
-    "server-dev:build": "NODE_ENV=development webpack --config ./server/webpack.server.js --mode=development -w",
-    "server-dev:start": "nodemon ./dev-server/index.js",
-    "server-dev": "npm-run-all --parallel client:build server-dev:*"
+    "test:client": "react-app-rewired test",
+    "eject:client": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": "react-app"

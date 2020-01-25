@@ -31,18 +31,37 @@ module.exports = {
                 }
             },
             {
-                test: /\.css$/,
-                use: [
-                    'isomorphic-style-loader',
+                oneOf: [
                     {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
+                        test: /\.module\.css$/,
+                        use: [
+                            'isomorphic-style-loader',
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    importLoaders: 1,
+                                    modules: false,
+                                }
+                            },
+                            'postcss-loader'
+                        ]
                     },
-                    'postcss-loader'
+                    {
+                        test: /\.css$/,
+                        use: [
+                            'isomorphic-style-loader',
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    importLoaders: 1,
+                                    modules: false
+                                }
+                            },
+                            'postcss-loader'
+                        ]
+                    }
                 ]
-            },
+            }
         ]
     }
 };

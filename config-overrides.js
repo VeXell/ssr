@@ -1,35 +1,51 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-module.exports = function override(config, webpackEnv) {
-    const isEnvDevelopment = webpackEnv === 'development';
-    const isEnvProduction = webpackEnv === 'production';
+module.exports = function override(config) {
 
     //do stuff with the webpack config...
-    const newRules = config.module.rules.map(item => {
+    config.module.rules = config.module.rules.map(item => {
         if (item.oneOf) {
             item.oneOf = item.oneOf.map(rule => {
-                if (rule.test && String(rule.test) === String(/\.css$/)) {
+                if (
+                    rule.test &&
+                    [
+                        String(/\.css$/),
+                        String(/\.module\.css$/),
+                        String(/\.(scss|sass)$/),
+                        String(/\.module\.(scss|sass)$/)
+                    ].indexOf(String(rule.test)) !== -1
+                ) {
+                    const isModuleRule = String(rule.test).indexOf('.module') !== -1;
+                    const isSass = String(rule.test).indexOf('sass') !== -1;
+
                     const rules = [];
-
-                    if (isEnvDevelopment) {
-                        rules.push('style-loader');
-                    }
-
-                    /*if (isEnvProduction) {
-                        rules.push({
-                            loader: MiniCssExtractPlugin.loader,
-                            //options: shouldUseRelativeAssetPaths ? { publicPath: '../../' } : {},
-                        });
-                    }*/
 
                     rules.push('isomorphic-style-loader');
                     rules.push({
                         loader: 'css-loader',
                         options: {
-                            importLoaders: 1
+                            importLoaders: isSass ? 2 : 1,
+                            modules: isModuleRule,
                         }
                     });
-                    rules.push('postcss-loader');
+
+                    rules.push({
+                        loader: 'postcss-loader',
+                    });
+
+                    if (isSass) {
+                        rules.push({
+                            loader: 'resolve-url-loader',
+                            options: {
+                                sourceMap: true,
+                            }
+                        });
+                        rules.push({
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: true,
+                            }
+                        });
+                    }
+
                     rule.use = rules;
                 }
 
@@ -39,8 +55,6 @@ module.exports = function override(config, webpackEnv) {
 
         return item;
     });
-
-    config.module.rules = newRules;
 
     return config;
 };
