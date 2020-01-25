@@ -2,14 +2,15 @@ import React from 'react';
 import styles  from './AppStyle.module.css';
 import stylesIndex from './styles.css';
 import withStyles from 'isomorphic-style-loader/withStyles';
+import Test from './Test';
 
-function App() {
+function Index(props) {
     return (
         <div className={styles.App}>
             <header className={styles.AppHeader}>
                 <img src="assets/logo.svg" className={styles.AppLogo} />
                 <p>
-                    Edit! <code>src/App.js</code> and save to reload.
+                    Edit <code>src/App.js</code> and save to reload.
                 </p>
                 <a
                     className={styles.AppLink}
@@ -23,9 +24,10 @@ function App() {
                 >
                     Learn React
                 </a>
+                {props.isTest ? <Test /> : null}
             </header>
         </div>
     );
 }
 
-export default withStyles(stylesIndex, styles)(App);
+export default withStyles(stylesIndex, styles)(Index);
