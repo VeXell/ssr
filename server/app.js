@@ -38,7 +38,7 @@ app.get('/*', (req, res) => {
         }
 
         data = data.replace('<div id="root"></div>', `<div data-ssr="true" id="root">${app}</div>`);
-        data = data.replace('<link id="inline-styles"/>', `<style>${[...css].join('')}</style>`)
+        data = data.replace('<link id="inline-styles"/>', `<style>${[...css].join('')}</style>`);
         return res.send(data);
     });
 });
