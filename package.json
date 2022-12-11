@@ -11,7 +11,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "create-react-app": "^3.3.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "extract-css-chunks-webpack-plugin": "^4.7.4",
     "file-system": "^2.2.2",
     "node-sass": "^4.13.1",
